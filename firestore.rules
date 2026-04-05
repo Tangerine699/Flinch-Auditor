@@ -1,0 +1,62 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: organizations
+// Document ID: orgId
+// Fields:
+//   - name: string (required)
+//   - apiKey: string (required)
+//   - createdAt: timestamp (required)
+//
+// Collection: violations
+// Document ID: violationId
+// Fields:
+//   - organizationId: string (required)
+//   - userHash: string (required)
+//   - violationType: string (required, enum: EMAIL, SSN, AWS_KEY, BEARER_TOKEN, PROPRIETARY_CODE)
+//   - severity: string (required, enum: LOW, HIGH, CRITICAL)
+//   - platform: string (required, enum: ChatGPT, Claude, Gemini)
+//   - timestamp: timestamp (required)
+//   - metadata: map (optional)
+//   - isOverridden: boolean (optional)
+//   - overrideReason: string (optional)
+//
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "aniketsinghgl2004@gmail.com" ||
+         (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'));
+    }
+
+    // Organizations
+    match /organizations/{orgId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Violations
+    match /violations/{violationId} {
+      allow read: if isAuthenticated();
+      allow create: if true; 
+      allow update: if isAuthenticated() && isAdmin();
+    }
+    
+    // Users
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "name": "Flinch Auditor",
+  "description": "Production-ready SaaS MVP for preventing PII and credential leaks in AI prompts.",
+  "requestFramePermissions": []
+}

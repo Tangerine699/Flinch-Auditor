@@ -1,0 +1,42 @@
+{
+  "entities": {
+    "Organization": {
+      "title": "Organization",
+      "description": "Enterprise organization using Flinch Auditor",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "apiKey": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "apiKey"]
+    },
+    "Violation": {
+      "title": "Violation",
+      "description": "A detected sensitive data leak",
+      "type": "object",
+      "properties": {
+        "organizationId": { "type": "string" },
+        "userHash": { "type": "string" },
+        "violationType": { "type": "string", "enum": ["EMAIL", "SSN", "AWS_KEY", "BEARER_TOKEN", "PROPRIETARY_CODE"] },
+        "severity": { "type": "string", "enum": ["LOW", "HIGH", "CRITICAL"] },
+        "platform": { "type": "string", "enum": ["ChatGPT", "Claude", "Gemini"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "metadata": { "type": "object" },
+        "isOverridden": { "type": "boolean" },
+        "overrideReason": { "type": "string" }
+      },
+      "required": ["organizationId", "userHash", "violationType", "severity", "platform", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/organizations/{orgId}": {
+      "schema": "Organization",
+      "description": "Organization details"
+    },
+    "/violations/{violationId}": {
+      "schema": "Violation",
+      "description": "Audit trail of violations"
+    }
+  }
+}
