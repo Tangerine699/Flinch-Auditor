@@ -1,20 +1,17 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🛡️ Flinch Auditor
+**Real-time GenAI Data Leak Prevention (DLP)**
 
-# Run and deploy your AI Studio app
+Flinch Auditor is a zero-trust security layer designed for corporate teams using ChatGPT, Claude, and Gemini. It intercepts sensitive data (PII, Credentials, API Keys) locally before it ever reaches third-party AI servers.
 
-This contains everything you need to run your app locally.
+### 🌟 Key Features
+- **Deterministic & Semantic Detection:** Uses Microsoft Presidio for high-accuracy PII catching.
+- **Just-in-Time Training:** Alerts employees in real-time, reducing repeat violations.
+- **CISO Oversight:** Real-time dashboard for monitoring organizational risk without storing private chat content.
 
-View your app in AI Studio: https://ai.studio/apps/63bd52c6-4dd0-44c5-b486-62fbb293ca5a
+### 📁 Repository Structure
+- `/chrome-extension`: The browser-side interception engine.
+- `/backend`: Node.js/FastAPI logic for high-speed analysis.
+- `/dashboard`: React-based audit trail for compliance teams.
 
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+*Developed by Aniket Singh | Cybersecurity Research @ MAHE*
